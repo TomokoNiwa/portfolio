@@ -1,5 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // --- 背景画像の自動切り替えロジック (Vanilla JS) ---
+$(function() {
     const images = [
         './img/ph01.jpg',
         './img/ph02.jpg',
@@ -11,16 +10,15 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     let currentIndex = 0;
-    const bgImg1 = document.getElementById('bg-img-1');
-    const bgImg2 = document.getElementById('bg-img-2');
+    const $bgImg1 = $('#bg-img-1');
+    const $bgImg2 = $('#bg-img-2');
 
     const fadeDuration = 2000; // CSSのtransition時間と合わせる
     const totalInterval = 5000; // 切り替え間隔
 
-    // 初回設定: 最初の画像をbgImg1にロード
-    if (bgImg1 && images.length > 0) {
-        bgImg1.src = images[currentIndex];
-        bgImg1.classList.add('active');
+    // 初回設定: 最初の画像を$bgImg1にロード
+    if ($bgImg1.length && images.length > 0) { // 要素が存在するかどうかを.lengthで確認
+        $bgImg1.attr('src', images[currentIndex]).addClass('active');
     }
 
     // 画像を切り替える関数
@@ -29,17 +27,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const nextImageSrc = images[nextIndex];
 
         // 現在アクティブな画像と、次にアクティブになる画像を特定
-        const currentActiveImg = bgImg1.classList.contains('active') ? bgImg1 : bgImg2;
-        const currentInactiveImg = bgImg1.classList.contains('active') ? bgImg2 : bgImg1;
+        const $currentActiveImg = $bgImg1.hasClass('active') ? $bgImg1 : $bgImg2;
+        const $currentInactiveImg = $bgImg1.hasClass('active') ? $bgImg2 : $bgImg1;
 
         // 次の画像を非アクティブなimg要素にロード
-        // 画像のプリロードは、img要素のsrcを更新するだけで行われます
-        currentInactiveImg.src = nextImageSrc;
+        $currentInactiveImg.attr('src', nextImageSrc);
 
         // アクティブクラスを切り替える
-        // CSSでactiveクラスにtransitionを設定することでフェード効果が出ます
-        currentActiveImg.classList.remove('active');
-        currentInactiveImg.classList.add('active');
+        $currentActiveImg.removeClass('active');
+        $currentInactiveImg.addClass('active');
         
         currentIndex = nextIndex;
     }
@@ -47,93 +43,88 @@ document.addEventListener('DOMContentLoaded', () => {
     // 指定した間隔で画像を切り替える
     setInterval(changeBackgroundImage, totalInterval);
 
-    // --- ハンバーガーメニューの開閉ロジック (Vanilla JS) ---
-    const hamburgerMenu = document.querySelector('.hamburger-menu');
-    const spNav = document.querySelector('.sp-nav');
-    const spNavLinks = document.querySelectorAll('.sp-nav ul li a'); // aタグ要素を取得
+    // --- ハンバーガーメニューの開閉ロジック (jQuery) ---
+    const $hamburgerMenu = $('.hamburger-menu');
+    const $spNav = $('.sp-nav');
+    const $spNavLinks = $('.sp-nav ul li a'); // aタグ要素を取得
 
     // メニューを閉じる共通関数を定義
     const closeMenu = () => {
-        hamburgerMenu.classList.remove('active');
-        spNav.classList.remove('active');
-        document.body.classList.remove('no-scroll'); // bodyのno-scrollクラスを削除
+        $hamburgerMenu.removeClass('active');
+        $spNav.removeClass('active');
+        $('body').removeClass('no-scroll'); // bodyのno-scrollクラスを削除
     };
 
-    if (hamburgerMenu && spNav) {
-        hamburgerMenu.addEventListener('click', () => {
-            if (spNav.classList.contains('active')) {
+    if ($hamburgerMenu.length && $spNav.length) { // 要素が存在するかどうかを.lengthで確認
+        $hamburgerMenu.on('click', function() {
+            if ($spNav.hasClass('active')) {
                 closeMenu();
             } else {
-                hamburgerMenu.classList.add('active');
-                spNav.classList.add('active');
-                document.body.classList.add('no-scroll'); // bodyにno-scrollクラスを追加
+                $hamburgerMenu.addClass('active');
+                $spNav.addClass('active');
+                $('body').addClass('no-scroll'); // bodyにno-scrollクラスを追加
             }
         });
 
-        // spNavの背景部分をクリックしてメニューを閉じる
-        spNav.addEventListener('click', (event) => {
-            if (event.target === spNav) { // クリックされたのがspNav自身か確認
+        // $spNavの背景部分をクリックしてメニューを閉じる
+        $spNav.on('click', function(event) {
+            if ($(event.target).is($spNav)) { // クリックされたのが$spNav自身か確認
                 closeMenu();
             }
         });
 
-        // spNav内のリンクがクリックされた時にメニューを閉じる
-        spNavLinks.forEach(link => {
-            link.addEventListener('click', (event) => {
-                // ページ内リンクの場合のみ処理（#から始まるhrefを持つリンク）
-                if (link.hash !== '') {
-                    closeMenu();
-                }
-                // デフォルトのスムーズスクロール (CSSのscroll-behavior) に任せるため
-                // event.preventDefault() は呼び出しません
-            });
+        // $spNav内のリンクがクリックされた時にメニューを閉じる
+        $spNavLinks.on('click', function() {
+            // ページ内リンクの場合のみ処理（#から始まるhrefを持つリンク）
+            if ($(this).attr('href').startsWith('#')) {
+                closeMenu();
+            }
+            // デフォルトのスムーズスクロール (CSSのscroll-behavior) に任せるため
+            // event.preventDefault() は呼び出しません
         });
     }
 
-    // --- スクロールによる要素のフェードインアニメーション (Vanilla JS) ---
-    const fadeInTargets = document.querySelectorAll('.fade-in-up'); // アニメーションを適用する要素
+    // --- スクロールによる要素のフェードインアニメーション (jQuery) ---
+    const $fadeInTargets = $('.fade-in-up'); // アニメーションを適用する要素
 
     // 要素が表示範囲に入ったかチェックする関数
     function checkVisibility() {
-        const windowHeight = window.innerHeight; // ウィンドウの高さ
-        const scrollTop = window.scrollY;        // スクロール量
+        const windowHeight = $(window).height(); // ウィンドウの高さ
+        const scrollTop = $(window).scrollTop(); // スクロール量
 
-        fadeInTargets.forEach(el => {
+        $fadeInTargets.each(function() { // jQueryの.each()でループ処理
+            const $el = $(this); // 各要素をjQueryオブジェクトとして取得
+
             // すでに表示済みなら何もしない
-            if (el.classList.contains('is-visible')) {
+            if ($el.hasClass('is-visible')) {
                 return;
             }
 
-            const elementOffset = el.getBoundingClientRect().top + scrollTop; // 要素の上端のドキュメントからの距離
+            const elementOffset = $el.offset().top; // 要素の上端のドキュメントからの距離
 
             // 要素が画面の下端から入ってきたかチェック
             // 要素の上端が、現在のスクロール位置 + ウィンドウの高さ - 閾値（例: 100px）よりも上にある場合
             if (elementOffset < (scrollTop + windowHeight - 100)) { // -100は少し早めにアニメーションさせるための調整
-                el.classList.add('is-visible');
+                $el.addClass('is-visible');
             }
         });
     }
 
     // ロード時とスクロール時にチェック関数を実行
-    window.addEventListener('scroll', checkVisibility);
-    window.addEventListener('load', checkVisibility);
+    $(window).on('scroll load', checkVisibility);
 
-    // 初回ロード時にもチェックを実行 (DOMContentLoadedですでに実行されるが念のため)
+    // 初回ロード時にもチェックを実行
     checkVisibility();
+
+    // --- フッターの年を自動更新するロジック (jQuery) ---
+    // 現在の年を取得
+    const year = new Date().getFullYear();
+
+    // idが "current-year" の要素を取得
+    const $yearElement = $('#current-year');
+
+    // 要素が存在すれば、そのテキストコンテンツを現在の年に設定
+    if ($yearElement.length) {
+        $yearElement.text(year);
+    }
 });
-
-
-
-// js/script.js の一番下に追記
-
-// --- フッターの年を自動更新するロジック ---
-// 現在の年を取得
-const year = new Date().getFullYear();
-
-// idが "current-year" の要素を取得
-const yearElement = document.getElementById('current-year');
-
-// 要素が存在すれば、そのテキストコンテンツを現在の年に設定
-if (yearElement) {
-    yearElement.textContent = year;
-}
