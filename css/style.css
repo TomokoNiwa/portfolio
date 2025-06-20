@@ -1,0 +1,357 @@
+@charset "UTF-8";
+
+/* ---------------------------------------------------- */
+/* スマートフォン用のスタイル（デフォルト）             */
+/* ---------------------------------------------------- */
+html {
+  scroll-behavior: smooth; /* これを追加するだけでOK！ */
+}
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+/* 背景画像コンテナ */
+#background-container {
+    width: 100%;
+    height: calc(100vh - 60px); /* 100vhからスマホヘッダー高さ(60px)を引く */
+    position: fixed;
+    top: 60px; /* スマホヘッダー高さ(60px) */
+    left: 0;
+    overflow: hidden;
+    z-index: -1;
+}
+
+/* 背景画像 */
+.background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* スマホ時は画像を縮小して要素内に収める */
+    object-position: top center;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+}
+
+.background-image.active {
+    opacity: 1;
+}
+
+/* ヘッダーのスタイル */
+#header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px; /* スマートフォンでのヘッダー高さ */
+    z-index: 100;
+    background-color: #fff;
+    box-sizing: border-box;
+    transition: 0.3s;
+}
+
+/* header-inner に Flexbox を適用 */
+.header-inner {
+    display: flex;
+    justify-content: space-between; /* 子要素を左右に配置 */
+    align-items: center; /* 垂直方向中央寄せ */
+    width: 100%; /* 親要素の幅いっぱいに広げる */
+    height: 100%; /* 親要素の高さいっぱいに広げる */
+    padding: 0 15px; /* 左右の余白 */
+    box-sizing: border-box; /* パディングを含めて幅を計算 */
+}
+
+#header h1 {
+    font-size: 1.2em;
+    color: #333;
+    margin: 0;
+}
+
+/* PC用メニューはスマホ時には非表示 */
+.pc-nav {
+    display: none;
+}
+
+/* ハンバーガーメニューアイコンのスタイル */
+.hamburger-menu {
+    width: 30px;
+    height: 20px;
+    position: relative; /* 子要素のabsolute基準 */
+    cursor: pointer;
+    z-index: 100; /* ヘッダーより手前に */
+}
+
+.hamburger-menu .bar {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: #333;
+    position: absolute;
+    left: 0;
+    transition: all 0.3s ease; /* アニメーション用 */
+}
+
+.hamburger-menu .bar:nth-child(1) { top: 0; }
+.hamburger-menu .bar:nth-child(2) { top: 9px; }
+.hamburger-menu .bar:nth-child(3) { top: 18px; }
+
+/* ハンバーガーメニューがアクティブになった時のスタイル（X印に変化） */
+.hamburger-menu.active .bar:nth-child(1) {
+    top: 9px;
+    transform: rotate(45deg);
+}
+.hamburger-menu.active .bar:nth-child(2) {
+    opacity: 0; /* 中央のバーを非表示 */
+}
+.hamburger-menu.active .bar:nth-child(3) {
+    top: 9px;
+    transform: rotate(-45deg);
+}
+
+/* スマホ用メニューのスタイル */
+.sp-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.9); /* 半透明の黒背景 */
+    color: white;
+    z-index: 90; /* 背景とヘッダーの間くらい */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transform: translateX(100%); /* 画面右外に隠す */
+    transition: transform 0.3s ease-in-out; /* スライドアニメーション */
+}
+
+.sp-nav.active {
+    transform: translateX(0); /* アクティブ時に画面内に表示 */
+}
+
+.sp-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+.sp-nav ul li {
+    margin-bottom: 20px;
+    font-size: 1.5em;
+}
+
+.sp-nav ul li a { /* 追加または変更 */
+    color: white;
+    text-decoration: none;
+    display: block; /* クリック領域を広げる */
+    padding: 15px 0; /* 適度なパディング */
+    width: 100%; /* 親要素いっぱいに広げる */
+}
+
+.sp-nav ul li a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* bodyのスクロール制御 (sp-navと併用) */
+body.no-scroll {
+    overflow: hidden;
+}
+
+/* メインコンテンツのスタイル */
+main {
+    position: relative;
+    z-index: 1;
+    padding-top: 60px;
+}
+/* フッターのスタイル */
+#footer { /* idセレクタに変更 */
+    background-color: #f0f0f0; /* フッターの背景色 */
+    padding: 20px; /* 上下左右のパディング */
+    text-align: center;
+    color: #555; /* テキストの色 */
+    font-size: 0.9em;
+    width: 100%;
+    box-sizing: border-box; /* パディングを含めて幅を計算 */
+    /* 他の要素との重なりを防ぐため、z-indexを設定しても良い */
+    position: relative; /* mainと同じくrelativeにしてz-indexを有効にする */
+    z-index: 2; /* mainよりさらに手前にしても良い */
+}
+h2{
+	font-size: clamp(1.25rem, 0.617rem + 3.16vw, 4.375rem);
+	text-align: center;
+	margin: 40px 0;
+}
+section.content {
+    width: 90%;
+    margin: 0 auto 10px;
+    padding: 20px;
+    color: #333;
+    box-sizing: border-box;
+}
+section.top-content {
+    margin-top: 300px;
+}
+section.content p {
+    line-height: 1.8;
+    margin: 0;
+}
+
+section.content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.treat{
+    background-color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 5px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+    section.content.categoryList{
+        padding: 0;
+    }
+    section.categoryList ul{
+        display: block;
+    }
+    section.categoryList ul li{
+		width: 100%;
+  		margin: 0 0 10px 0;
+		padding: 20px;
+    }
+/* --- アニメーションの遅延 --- */
+/* achievementsリストアイテムの遅延 */
+.categoryList ul li.fade-in-up {
+    /* デフォルトのtransitionを継承 */
+}
+
+/* 各li要素にアニメーションディレイを設定 */
+.categoryList ul li.fade-in-up:nth-child(1) { transition-delay: 0s; }
+.categoryList ul li.fade-in-up:nth-child(2) { transition-delay: 0.1s; }
+.categoryList ul li.fade-in-up:nth-child(3) { transition-delay: 0.2s; }
+.categoryList ul li.fade-in-up:nth-child(4) { transition-delay: 0.3s; }
+.categoryList ul li.fade-in-up:nth-child(5) { transition-delay: 0.4s; }
+.categoryList ul li.fade-in-up:nth-child(6) { transition-delay: 0.5s; }
+/* 必要に応じてさらに追加 */
+/* ---------------------------------------------------- */
+/* タブレット用のスタイル (画面幅が 768px 以上の場合)   */
+/* ---------------------------------------------------- */
+@media screen and (min-width: 768px) {
+    #background-container {
+        height: calc(100vh - 70px);
+        top: 70px;
+    }
+    #header {
+        height: 70px;
+    }
+    .header-inner {
+        padding: 0 20px;
+    }
+    main {
+        padding-top: 70px;
+    }
+    section.content {
+        width: 80%;
+        margin-bottom: 10px;
+    }
+    section.top-content {
+        margin-top: 400px;
+    }
+}
+
+/* ---------------------------------------------------- */
+/* PC用のスタイル (画面幅が 1024px 以上の場合)          */
+/* ---------------------------------------------------- */
+@media screen and (min-width: 1024px) {
+    /* PCでは画像を拡大して覆うように戻す */
+    .background-image {
+        object-fit: cover;
+    }
+    #background-container {
+        height: calc(100vh - 80px);
+        top: 80px;
+    }
+    #header {
+        height: 80px;
+    }
+    .header-inner {
+        padding: 0 30px;
+    }
+    /* PC用メニューを表示 */
+    .pc-nav {
+        height: 100%;
+        display: flex; /* Flexboxで垂直方向中央寄せ */
+        align-items: center; /* 垂直方向中央寄せ */
+    }
+    .pc-nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        height: 100%;
+    }
+    .pc-nav ul li {
+        margin-left: 20px;
+        font-size: 1em;
+        display: flex; /* li の中身も垂直中央寄せにする */
+        align-items: center;
+        height: 100%;
+    }
+    /* ハンバーガーメニューはPC時には非表示 */
+    .hamburger-menu {
+        display: none;
+    }
+    /* スマホ用メニューはPC時には非表示 */
+    .sp-nav {
+        display: none;
+    }
+
+    main {
+        padding-top: 80px;
+    }
+    section.content {
+        width: 1000px;
+        margin-bottom: 20px;
+    }
+    section.top-content {
+        margin-top: 500px;
+    }
+    section.content.categoryList{
+        padding: 0;
+    }
+    section.categoryList ul{
+        display: flex;
+		flex-wrap: wrap;
+    }
+    section.categoryList ul li{
+		width: calc((100% / 3) - 10px);
+  		margin: 0 0 10px 10px;
+    }
+    section.categoryList ul li:first-child,
+	section.categoryList ul li:nth-child(4n){
+  		margin: 0 0 10px 0;
+    }
+	
+}
+
+/* ---------------------------------------------------- */
+/* アニメーション用のスタイル                           */
+/* ---------------------------------------------------- */
+
+/* アニメーションを適用する要素の初期状態 */
+.fade-in-up {
+    opacity: 0; /* 最初は透明 */
+    transform: translateY(20px); /* 少し下にずらしておく */
+    transition: opacity 1s ease-out, transform 1s ease-out; /* アニメーションの速度と時間 */
+    will-change: opacity, transform; /* パフォーマンス最適化 */
+}
+
+/* 要素が画面内に入ったときに付与されるクラス */
+.fade-in-up.is-visible {
+    opacity: 1; /* 不透明にして表示 */
+    transform: translateY(0); /* 元の位置に戻す */
+}
