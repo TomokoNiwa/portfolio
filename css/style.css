@@ -223,11 +223,7 @@ section.content ul {
   		margin: 0 0 10px 0;
 		padding: 20px;
     }
-/* --- アニメーションの遅延 --- */
-/* achievementsリストアイテムの遅延 */
-.categoryList ul li.fade-in-up {
-    /* デフォルトのtransitionを継承 */
-}
+
 
 /* 各li要素にアニメーションディレイを設定 */
 .categoryList ul li.fade-in-up:nth-child(1) { transition-delay: 0s; }
@@ -368,7 +364,7 @@ section.content ul {
   color: #fff;
   padding: 10px 15px;
   border-radius: 5px;
-  z-index: 999;
+  z-index: 9999;
 }
 
 #pageTop a {
