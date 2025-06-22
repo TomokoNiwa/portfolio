@@ -27,8 +27,13 @@ $(function() {
         const nextImageSrc = images[nextIndex];
 
         // 現在アクティブな画像と、次にアクティブになる画像を特定
-        const $currentActiveImg = $bgImg1.hasClass('active') ? $bgImg1 : $bgImg2;
-        const $currentInactiveImg = $bgImg1.hasClass('active') ? $bgImg2 : $bgImg1;
+        if ($bgImg1.hasClass('active')) {
+            $currentActiveImg = $bgImg1; // $bgImg1がアクティブ
+            $currentInactiveImg = $bgImg2; // $bgImg2が非アクティブ
+        } else { // そうでなければ、$bgImg1に'active'クラスがない場合
+            $currentActiveImg = $bgImg2; // $bgImg2がアクティブ
+            $currentInactiveImg = $bgImg1; // $bgImg1が非アクティブ
+        }
 
         // 次の画像を非アクティブなimg要素にロード
         $currentInactiveImg.attr('src', nextImageSrc);
