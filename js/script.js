@@ -14,7 +14,7 @@ $(function() {
     const $bgImg2 = $('#bg-img-2');
 
     const fadeDuration = 2000; // CSSのtransition時間と合わせる
-    const totalInterval = 5000; // 切り替え間隔
+    const totalInterval = 8000; // 切り替え間隔
 
     // 初回設定: 最初の画像を$bgImg1にロード
     if ($bgImg1.length && images.length > 0) { // 要素が存在するかどうかを.lengthで確認
@@ -127,4 +127,29 @@ $(function() {
     if ($yearElement.length) {
         $yearElement.text(year);
     }
+
+// ページトップ
+  var pagetop = $('#pageTop');
+  // 最初はボタンを非表示にする
+  pagetop.hide();
+
+  // スクロールイベント
+  $(window).scroll(function() {
+    // 100pxスクロールしたらボタンを表示、それ以外は非表示
+    if ($(this).scrollTop() > 100) {
+      pagetop.fadeIn(); // ゆっくり表示
+    } else {
+      pagetop.fadeOut(); // ゆっくり非表示
+    }
+  });
+
+  // クリックイベント
+  pagetop.click(function() {
+    // ページトップへスムーズにスクロール
+    $('body,html').animate({
+      scrollTop: 0
+    }, 500); // 500ミリ秒かけてスクロール
+    return false; // ハッシュがURLに追加されるのを防ぐ
+  });
+
 });
