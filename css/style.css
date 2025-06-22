@@ -355,3 +355,23 @@ section.content ul {
     opacity: 1; /* 不透明にして表示 */
     transform: translateY(0); /* 元の位置に戻す */
 }
+/* ---------------------------------------------------- */
+/* ページトップ                          */
+/* ---------------------------------------------------- */
+
+#pageTop {
+  display: none; /* 初期状態では非表示 */
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  background-color: #333;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 5px;
+  z-index: 999;
+}
+
+#pageTop a {
+  color: #fff;
+  text-decoration: none;
+}
