@@ -158,3 +158,31 @@ $(function() {
   });
 
 });
+
+
+// モーダル
+$(document).ready(function() {
+    // モーダル要素を取得
+    var $modal = $("#myModal");
+    var $modalImg = $("#img01");
+    var $captionText = $("#caption");
+
+    // サムネイルがクリックされたときの処理
+    $(".thumbnail").on("click", function() {
+        $modal.css("display", "block"); // モーダルを表示
+        $modalImg.attr("src", $(this).attr("src")); // クリックされた画像のsrcを設定
+        $captionText.html($(this).attr("alt")); // クリックされた画像のalt属性をキャプションに設定
+    });
+
+    // 閉じるボタンがクリックされたときの処理
+    $(".close").on("click", function() {
+        $modal.css("display", "none"); // モーダルを非表示
+    });
+
+    // モーダルの外側がクリックされたときの処理
+    $(window).on("click", function(event) {
+        if ($(event.target).is($modal)) { // クリックされた要素がモーダル自体であるか確認
+            $modal.css("display", "none"); // モーダルを非表示
+        }
+    });
+});
