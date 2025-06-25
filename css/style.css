@@ -221,10 +221,79 @@ section.content ul {
     section.categoryList ul li{
 		width: 100%;
   		margin: 0 0 10px 0;
-		padding: 20px;
+		padding: 2px;
     }
+    section.categoryList ul li figure{
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		padding: 0;
+    }
+/* モーダル */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 200;
+            padding-top: 100px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.9);
+        }
 
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 100%;
+            max-width: 1600px;
+        }
 
+        #caption {
+            margin: auto;
+            display: block;
+            width: 100%;
+            max-width: 1600px;
+            text-align: center;
+            color: #ccc;
+            padding: 10px 0;
+            height: 150px;
+        }
+
+        .modal-content, #caption {
+            -webkit-animation-name: zoom;
+            -webkit-animation-duration: 0.6s;
+            animation-name: zoom;
+            animation-duration: 0.6s;
+        }
+
+        @-webkit-keyframes zoom {
+            from {-webkit-transform:scale(0)}
+            to {-webkit-transform:scale(1)}
+        }
+
+        @keyframes zoom {
+            from {transform:scale(0)}
+            to {transform:scale(1)}
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
 /* 各li要素にアニメーションディレイを設定 */
 .categoryList ul li.fade-in-up:nth-child(1) { transition-delay: 0s; }
 .categoryList ul li.fade-in-up:nth-child(2) { transition-delay: 0.1s; }
